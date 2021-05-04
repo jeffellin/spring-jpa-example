@@ -1,6 +1,7 @@
 package com.example.demo.customer;
 
 import com.example.demo.customer.*;
+import org.hamcrest.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
@@ -33,7 +34,8 @@ public class CustomerControllerTest {
     public void shouldCreateCustomer() throws Exception {
 
         String request = "{ " +
-                  "\"phoneNumber\":\"2234123123\"" +
+                  "\"phoneNumber\":\"2234123123\"," +
+                   "\"firstName\":\"john\"" +
                 " }";
 
 
@@ -46,18 +48,38 @@ public class CustomerControllerTest {
 
     }
     @Test
-    public void shouldNotCreateCustomer() throws Exception {
+    public void shouldNotCreateCustomer_BadPhone() throws Exception {
 
         String request = "{ " +
-                "\"phoneNumber\":\"123e4123123\"" +
+                "\"phoneNumber\":\"123e4123123\"," +
+                "\"firstName\":\"john\"" +
                 " }";
 
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/c").
                         contentType(MediaType.APPLICATION_JSON).content(request))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",Matchers.containsInAnyOrder("Phone Number Not Valid")))
+                //we only expect one error
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.hasSize(1)));
 
     }
+    @Test
+    public void shouldNotCreateCustomer_NoName() throws Exception {
 
+        String request = "{ " +
+                "\"phoneNumber\":\"2234123123\"" +
+                " }";
+
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/c").
+                        contentType(MediaType.APPLICATION_JSON).content(request))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors").value("Invalid First Name"))
+                //we only expect one error
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.hasSize(1)));
+
+    }
 }

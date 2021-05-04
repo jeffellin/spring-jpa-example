@@ -11,8 +11,8 @@ public class PhoneValidator implements ConstraintValidator<Phone,String> {
     @Override
     public boolean isValid(String o, ConstraintValidatorContext constraintValidatorContext) {
 
-        System.err.println(some);
-        System.err.println(o);
+        //System.err.println(some);
+        //System.err.println(o);
 
         return true;
     }

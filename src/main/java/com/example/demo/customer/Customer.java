@@ -24,9 +24,12 @@ public class Customer {
      *
      * The final four digits, known as the station code, have no restrictions.
      */
-    @Pattern(  message = "{BranchCode.customer.branch}", regexp = "^\\(?([2-9][0-8][0-9])\\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$")
+    @Pattern(  message = "Phone Number Not Valid", regexp = "^\\(?([2-9][0-8][0-9])\\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$")
     @Phone(id="foo")
     private String phoneNumber;
+    @NotEmpty(message = "{ValidationError.FirstName}")
+    private String firstName;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private List<Address> address;
