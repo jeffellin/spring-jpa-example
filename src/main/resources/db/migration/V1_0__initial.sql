@@ -9,5 +9,6 @@ create table Address(
 create table Customer(
     id int primary key auto_increment,
     phone_number varchar(50),
-    first_name varchar(50)
+    first_name varchar(50),
+    last_name varchar(50)
 );

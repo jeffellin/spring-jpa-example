@@ -31,6 +31,9 @@ public class Customer {
     @NotEmpty(message = "{ValidationError.FirstName}")
     private String firstName;
 
+    @NotEmpty(message = "{ValidationError.FirstName}")
+    private String lastName;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private List<Address> address;
